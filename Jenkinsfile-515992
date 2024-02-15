@@ -19,6 +19,7 @@ pipeline {
                 script {
                     withCredentials([usernameColonPassword(credentialsId: 'nexus-registry', variable: 'REG_CREDS')]) {
                         sh 'buildah bud --no-cache --pull --force-rm --format docker --creds ${REG_CREDS}' + " -t registry.ustpace.com/docker-sandbox/demo-project-micro-service-1:latest --iidfile iid ."
+					    echo "$(cat iidfile)"
                         sh 'buildah push --rm --creds ${REG_CREDS} $(cat iid) ' + " registry.ustpace.com/docker-sandbox/demo-project-micro-service-1:latest"
                     }
                 }
